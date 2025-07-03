@@ -108,8 +108,8 @@
               <h3 class="text-xl font-medium mb-2">How can I contact customer support?</h3>
               <p class="text-gray-300">
                 For fastest response, use the encrypted messaging system in your account dashboard. 
-                You can also email <span class="text-rose-400">support@yourdomain.com</span> 
-                (PGP key available). Average response time is 12-24 hours. Include your order 
+                You can also email <span class="text-rose-400"><RouterLink to="/contact">Support</RouterLink></span> 
+                 Average response time is 12-24 hours. Include your order 
                 reference number for order-specific inquiries.
               </p>
             </div>
