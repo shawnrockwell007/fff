@@ -30,7 +30,7 @@
               <label class="flex items-start p-4 rounded-lg border border-zinc-800 hover:border-amber-400 transition-colors cursor-pointer">
                 <input type="radio" value="pickup" v-model="deliveryType" class="mt-1 mr-3 h-4 w-4 text-rose-600 focus:ring-rose-500 border-zinc-600" />
                 <div>
-                  <h3 class="font-medium">Private Pickup</h3>
+                  <h3 class="font-medium">Private Delivery</h3>
                   <p class="text-sm text-gray-400 mt-1">Generate a unique code for third party collection</p>
                 </div>
               </label>
