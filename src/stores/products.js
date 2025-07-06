@@ -31,7 +31,7 @@ export const useProductStore = defineStore('product', {
       { id: 19, name: 'Hard Limit Bed Restraint Kit', price: '50.00', image: 'https://media.lovehoneyassets.com/i/lovehoney/40185_a26084_silver_000?$primary$&h=371&w=278&fmt=auto&qlt=80', type: 'toy', level: 'intermediate' },
       { id: 20, name: 'Reversible Colar Leather And Lead', price: '15.00', image: 'https://media.lovehoneyassets.com/i/lovehoney/83667_a46558_black_000?$primary$&h=371&w=278&fmt=auto&qlt=80', type: 'toy', level: 'beginner' },
       { id: 21, name: 'Fantasy Bondage Kit', price: '30.00', image: 'https://media.lovehoneyassets.com/i/lovehoney/72293_a39379_blue_000?$primary$&h=371&w=278&fmt=auto&qlt=80', type: 'toy', level: 'advanced' },
-      { id: 22, name: 'Full Bondage Kit', price: '105.00', image: 'https://media.lovehoneyassets.com/i/lovehoney/72395_a39466_black_000?$primary$&h=371&w=278&fmt=auto&qlt=80', type: 'toy', level: 'advanced' },
+      { id: 22, name: 'Full Bondage Kit', price: '150.00', image: 'https://media.lovehoneyassets.com/i/lovehoney/72395_a39466_black_000?$primary$&h=371&w=278&fmt=auto&qlt=80', type: 'toy', level: 'advanced' },
       { id: 23, name: 'Ankle Cuff', price: '15.00', image: 'https://media.lovehoneyassets.com/i/lovehoney/57763_a32676_black_000?$primary$&h=371&w=278&fmt=auto&qlt=80', type: 'toy', level: 'beginner' },
       { id: 24, name: 'Bondage Tape', price: '7.00', image: 'https://media.lovehoneyassets.com/i/lovehoney/59251_a71_red_000?$primary$&h=371&w=278&fmt=auto&qlt=80', type: 'toy', level: 'intermediate' },
       { id: 25, name: 'Rose Pump Clittoral Stimulation', price: '60.00', image: 'https://media.lovehoneyassets.com/i/lovehoney/86861_a48906_red_000?$primary$&h=371&w=278&fmt=auto&qlt=80', type: 'toy', level: 'advanced' },
