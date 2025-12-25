@@ -23,8 +23,8 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
     {
-      path: '/products',
-      name: 'all-products',
+      path: '/collections',
+      name: 'collections',
       component: AllProductsView,
     },
     {
@@ -43,8 +43,8 @@ const router = createRouter({
       component: FaqView,
     },
     {
-      path: '/contact',
-      name: 'contact',
+      path: '/support',
+      name: 'support',
       component: ContactView,
       
     }

@@ -1,9 +1,115 @@
 @import "tailwindcss";
 
+/* Theme tokens (Tailwind v4) - Updated for better contrast */
+@theme {
+  --color-ivory: #FFF9F5;
+  --color-blush: #FFE5E5;
+  --color-warm-beige: #F4E4D7;
+  --color-muted-rose: #C7858E;
+  --color-deep-rose: #A05662;
+  --color-charcoal: #2D2D2D;
+
+  --font-sans: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+/* Base styles */
 @layer base {
-  :root {
-    --color-gold: #D4AF37;
-    --color-crimson: #DC143C;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply bg-ivory text-charcoal font-sans antialiased selection:bg-muted-rose/30;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-light tracking-wide text-charcoal;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 }
 
+/* Custom utilities */
+@layer utilities {
+  .bg-gradient-radial {
+    background: radial-gradient(circle at center, var(--tw-gradient-stops));
+  }
+
+  .text-charcoal {
+    color: #2D2D2D;
+  }
+
+  .blur-\[100px\] {
+    filter: blur(100px);
+  }
+
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+
+  .aspect-\[4\/5\] {
+    aspect-ratio: 4 / 5;
+  }
+
+  .rounded-\[3rem\] {
+    border-radius: 3rem;
+  }
+
+  .shadow-\[0_8px_30px_rgb\(0\,0\,0\,0\.04\)\] {
+    box-shadow: 0 8px 30px rgb(0, 0, 0, 0.04);
+  }
+
+  .shadow-\[0_20px_40px_rgb\(212\,165\,165\,0\.15\)\] {
+    box-shadow: 0 20px 40px rgb(199, 133, 142, 0.25);
+  }
+
+  .shadow-muted-rose\/20 {
+    box-shadow: 0 0 0 1px rgba(199, 133, 142, 0.2);
+  }
+
+  .tracking-\[0\.2em\] {
+    letter-spacing: 0.2em;
+  }
+
+  .duration-600 {
+    transition-duration: 600ms;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF9F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C7858E;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A05662;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}

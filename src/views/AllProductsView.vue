@@ -1,101 +1,133 @@
 <template>
-    <section class="bg-black text-white min-h-screen pt-24 px-4">
-      <div class="container mx-auto">
-        <h1 class="text-3xl font-serif text-center mb-6">Collections</h1>
-        <p class="text-2xl font-serif text-red-500 text-center mb-6">Only available products are listed here</p>
-  
-        <!-- Filter Navigation -->
-        <div class="flex justify-center space-x-6 mb-10">
-          <button
-            v-for="type in ['outfit', 'toy', 'wellness']"
-            :key="type"
-            @click="selectedType = type"
-            :class="[
-              'uppercase font-medium tracking-wide transition-colors px-4 py-2 border-b-2',
-              selectedType === type
-                ? 'text-rose-600 border-rose-600'
-                : 'text-gray-400 border-transparent hover:text-white',
-            ]"
-          >
-            {{ type }}
-          </button>
-        </div>
-  
-        <!-- Product Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          <div
-            v-for="product in filteredProducts"
-            :key="product.id"
-            class="bg-zinc-900 rounded shadow hover:shadow-lg transition-shadow group"
-          >
-            <div class="relative aspect-[3/4] bg-gray-800">
+  <section class="min-h-screen pt-32 pb-20 px-6 relative bg-ivory">
+    <!-- Background decoration -->
+    <div class="absolute top-20 right-10 w-96 h-96 bg-blush/20 rounded-full blur-3xl pointer-events-none" />
+    <div class="absolute bottom-20 left-10 w-80 h-80 bg-warm-beige/30 rounded-full blur-3xl pointer-events-none" />
+    
+    <div class="container mx-auto relative z-10">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <span class="inline-block py-2 px-5 rounded-full bg-white/80 backdrop-blur-md border-2 border-muted-rose/30 text-xs font-semibold tracking-[0.2em] text-muted-rose mb-6 uppercase shadow-sm">
+          Curated Selection
+        </span>
+        <h1 class="text-5xl md:text-6xl font-thin text-charcoal mb-6 tracking-tight">
+          Our <span class="italic text-muted-rose font-light">Collections</span>
+        </h1>
+        <p class="text-lg text-gray-700 max-w-2xl mx-auto font-light leading-relaxed">
+          Discover our carefully curated selection of premium products
+        </p>
+      </div>
+
+      <!-- Filter Navigation -->
+      <div class="flex justify-center gap-4 mb-16 flex-wrap">
+        <button
+          v-for="type in filterTypes"
+          :key="type.value"
+          @click="selectedType = type.value"
+          :class="[
+            'px-8 py-3 rounded-full text-sm tracking-widest uppercase font-semibold transition-all duration-300',
+            selectedType === type.value
+              ? 'bg-muted-rose text-white shadow-lg scale-105'
+              : 'bg-white/90 text-charcoal border-2 border-muted-rose/20 hover:border-muted-rose hover:scale-102'
+          ]"
+        >
+          {{ type.label }}
+        </button>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 max-w-7xl mx-auto">
+        <div
+          v-for="product in filteredProducts"
+          :key="product.id"
+          class="group"
+        >
+          <div class="bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden border-2 border-white/40 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105">
+            <!-- Product Image -->
+            <div class="relative aspect-[3/4] bg-warm-beige/20 overflow-hidden">
               <img
                 :src="product.image"
                 :alt="product.name"
-                class="w-full h-full object-cover rounded-t"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 loading="lazy"
                 @error="handleImageError($event, product)"
               />
-              <span
-                class="absolute top-3 left-3 bg-black bg-opacity-70 text-xs text-white px-2 py-1 rounded"
-              >
+              <div class="absolute inset-0 bg-gradient-to-t from-charcoal/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <!-- Type Badge -->
+              <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-muted-rose px-4 py-1.5 rounded-full text-xs tracking-widest uppercase font-semibold shadow-md">
                 {{ product.type }}
               </span>
             </div>
-            <div class="p-4">
-              <h3 class="text-lg font-medium mb-2 group-hover:text-rose-600 transition-colors">
+
+            <!-- Product Details -->
+            <div class="p-4 md:p-6">
+              <h3 class="text-base md:text-xl font-light text-charcoal mb-2 group-hover:text-muted-rose transition-colors duration-300">
                 {{ product.name }}
               </h3>
-              <p class="text-amber-400 mb-3">${{ product.price }}</p>
+              <p class="text-lg md:text-2xl font-light text-muted-rose mb-3 md:mb-4">${{ product.price }}</p>
               
-              <!-- Size Dropdown (only for outfits) -->
-              <div v-if="product.type === 'outfit'" class="mb-3">
-                <label class="block text-sm text-gray-400 mb-1">Select Size</label>
+              <!-- Size Selector (for outfits) -->
+              <div v-if="product.type === 'outfit'" class="mb-3 md:mb-4">
+                <label class="block text-xs md:text-sm text-gray-600 mb-2 tracking-wide uppercase font-medium">Select Size</label>
                 <select
                   v-model="selectedSizes[product.id]"
-                  class="w-full bg-zinc-800 border-2 text-white rounded px-3 py-2 text-sm focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition"
-                  :class="{'border-rose-500': selectedSizes[product.id], 'border-zinc-600': !selectedSizes[product.id]}"
+                  class="w-full bg-white/90 border-2 text-charcoal rounded-full px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-muted-rose focus:border-muted-rose transition-all"
+                  :class="{'border-muted-rose': selectedSizes[product.id], 'border-warm-beige': !selectedSizes[product.id]}"
                 >
-                  <option value="" disabled selected>Choose your size</option>
+                  <option value="" disabled>Choose size</option>
                   <option v-for="size in product.sizes" :key="size" :value="size">
                     {{ size }}
                   </option>
                 </select>
-                <p v-if="selectedSizes[product.id]" class="text-xs text-rose-400 mt-1">
-                  Selected: {{ selectedSizes[product.id] }}
+                <p v-if="selectedSizes[product.id]" class="text-xs text-muted-rose mt-1 md:mt-2 font-medium">
+                  ✓ Selected: {{ selectedSizes[product.id] }}
                 </p>
               </div>
 
+              <!-- Add to Cart Button -->
               <button
                 @click="addToCart(product)"
-                class="w-full bg-rose-600 text-white py-2 rounded-sm transition flex items-center justify-center gap-2"
+                class="w-full py-2 md:py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-1 md:gap-2 font-semibold text-xs md:text-sm tracking-widest uppercase"
                 :class="{
-                  'opacity-50 cursor-not-allowed': product.type === 'outfit' && !selectedSizes[product.id],
-                  'hover:bg-rose-700': !(product.type === 'outfit' && !selectedSizes[product.id])
+                  'bg-gray-300 text-gray-500': product.type === 'outfit' && !selectedSizes[product.id],
+                  'bg-muted-rose text-white hover:bg-[#A05662] shadow-lg hover:shadow-xl hover:scale-105': !(product.type === 'outfit' && !selectedSizes[product.id])
                 }"
               >
-                <span>Add to Cart</span>
-                <span v-if="product.type === 'outfit' && selectedSizes[product.id]" 
-                      class="text-xs bg-black/30 px-2 py-1 rounded">
-                  Size: {{ selectedSizes[product.id] }}
-                </span>
+                <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span class="hidden md:inline">Add to Cart</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Toast Notification -->
-      <div v-if="showToast" class="fixed bottom-4 right-4 z-50">
+      <!-- Empty State -->
+      <div v-if="filteredProducts.length === 0" class="text-center py-20">
+        <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-warm-beige/30 flex items-center justify-center">
+          <svg class="w-12 h-12 text-muted-rose" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-light text-charcoal mb-2">No products available</h3>
+        <p class="text-gray-600 font-light">Check back soon for new additions</p>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <transition name="toast">
+      <div v-if="showToast" class="fixed bottom-8 right-8 z-50">
         <div 
-          class="text-white px-6 py-3 rounded-lg shadow-lg flex items-center animate-fade"
+          class="px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-xl border-2"
           :class="{
-            'bg-green-600': toastType === 'success',
-            'bg-red-600': toastType === 'error',
-            'bg-yellow-600': toastType === 'warning'
+            'bg-green-500/95 text-white border-green-400': toastType === 'success',
+            'bg-red-500/95 text-white border-red-400': toastType === 'error',
+            'bg-amber-500/95 text-white border-amber-400': toastType === 'warning'
           }"
         >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path 
               stroke-linecap="round" 
               stroke-linejoin="round" 
@@ -103,15 +135,16 @@
               :d="toastIcon"
             />
           </svg>
-          {{ toastMessage }}
+          <span class="font-medium">{{ toastMessage }}</span>
         </div>
       </div>
-    </section>
+    </transition>
+  </section>
 </template>
 
 <script>
 import { useProductStore } from '@/stores/products'
-import { useCartStore } from '@/stores/cart'
+import { useCartStore } from '@/stores/cartStore'
 import { mapState } from 'pinia'
 
 export default {
@@ -123,7 +156,12 @@ export default {
       showToast: false,
       toastMessage: '',
       toastType: 'success',
-      toastTimeout: null
+      toastTimeout: null,
+      filterTypes: [
+        { value: 'outfit', label: 'Outfits' },
+        { value: 'toy', label: 'Toys' },
+        { value: 'wellness', label: 'Wellness' }
+      ]
     }
   },
   computed: {
@@ -135,7 +173,7 @@ export default {
       switch(this.toastType) {
         case 'success': return 'M5 13l4 4L19 7'
         case 'error': return 'M6 18L18 6M6 6l12 12'
-        case 'warning': return 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+        case 'warning': return 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
         default: return 'M5 13l4 4L19 7'
       }
     }
@@ -143,7 +181,7 @@ export default {
   methods: {
     addToCart(product) {
       if (product.type === 'outfit' && !this.selectedSizes[product.id]) {
-        this.showToastMessage('Please select a size before adding this outfit to cart', 'warning')
+        this.showToastMessage('Please select a size before adding to cart', 'warning')
         return
       }
 
@@ -156,10 +194,14 @@ export default {
       const sizeText = product.type === 'outfit' ? ` (Size: ${this.selectedSizes[product.id]})` : ''
       this.showToastMessage(`${product.name}${sizeText} added to cart!`, 'success')
       
-      this.$set(this.selectedSizes, product.id, '')
+      // Reset the size selection for this product
+      if (product.type === 'outfit') {
+        this.selectedSizes[product.id] = ''
+      }
     },
     handleImageError(event, product) {
       console.error('Image failed to load:', product.image)
+      event.target.src = 'https://via.placeholder.com/400x600/F4E4D7/C7858E?text=Product+Image'
     },
     showToastMessage(message, type = 'success') {
       this.toastMessage = message
@@ -188,37 +230,34 @@ export default {
 </script>
 
 <style scoped>
-/* Animation for toast notification */
-@keyframes fade {
-  0% { opacity: 0; transform: translateY(10px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(10px); }
+/* Toast transitions */
+.toast-enter-active, .toast-leave-active {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.animate-fade {
-  animation: fade 3s ease-in-out;
+.toast-enter-from {
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
 }
 
-.opacity-50 {
-  opacity: 0.5;
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.8);
 }
-.cursor-not-allowed {
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom selection color */
+::selection {
+  background-color: rgba(199, 133, 142, 0.3);
+}
+
+/* Disabled button styles */
+button:disabled {
   cursor: not-allowed;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-::-webkit-scrollbar-thumb {
-  background: #4b5563;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  transform: none !important;
 }
 </style>
