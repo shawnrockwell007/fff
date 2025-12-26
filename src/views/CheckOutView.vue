@@ -59,9 +59,24 @@
                 class="w-full bg-white/90 border-2 border-warm-beige rounded-2xl px-4 py-3 text-charcoal focus:outline-none focus:ring-2 focus:ring-muted-rose focus:border-muted-rose transition-all placeholder-gray-400" />
             </div>
             <div>
-              <label class="block text-sm text-gray-600 mb-2 font-medium uppercase tracking-wide">Phone Number</label>
-              <input v-model="delivery.phone" type="tel" placeholder="+1 (___) ___-____" 
-                class="w-full bg-white/90 border-2 border-warm-beige rounded-2xl px-4 py-3 text-charcoal focus:outline-none focus:ring-2 focus:ring-muted-rose focus:border-muted-rose transition-all placeholder-gray-400" />
+              <label class="block text-sm text-gray-600 mb-2 font-medium uppercase tracking-wide">Email</label>
+              <input 
+                v-model="delivery.email" 
+                @blur="validateEmail"
+                @input="emailError = ''"
+                type="email" 
+                placeholder="Your email address" 
+                :class="emailError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-warm-beige focus:border-muted-rose focus:ring-muted-rose'"
+                class="w-full bg-white/90 border-2 rounded-2xl px-4 py-3 text-charcoal focus:outline-none focus:ring-2 transition-all placeholder-gray-400" 
+              />
+              <transition name="fade">
+                <p v-if="emailError" class="text-red-500 text-xs mt-2 flex items-center gap-1">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  {{ emailError }}
+                </p>
+              </transition>
             </div>
             <div>
               <label class="block text-sm text-gray-600 mb-2 font-medium uppercase tracking-wide">Delivery Address</label>
@@ -160,9 +175,9 @@
             <!-- Submit Button -->
             <button 
               @click="sendOrderDetails"
-              :disabled="deliveryType === 'standard' && (!delivery.name || !delivery.address || !delivery.phone)"
+              :disabled="deliveryType === 'standard' && (!delivery.name || !delivery.email || !delivery.address)"
               class="w-full py-4 rounded-full font-semibold text-sm tracking-widest uppercase transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-              :class="(deliveryType === 'standard' && (!delivery.name || !delivery.address || !delivery.phone))
+              :class="(deliveryType === 'standard' && (!delivery.name || !delivery.email || !delivery.address))
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 : 'bg-muted-rose text-white hover:bg-[#A05662] hover:scale-105'"
             >
@@ -233,7 +248,7 @@
                   <p class="text-sm font-semibold text-green-800 mb-1">Payment Verification</p>
                   <p class="text-sm text-green-700">
                     We are verifying your payment and will send a confirmation email once completed.
-                    For private delivery, your payment will be verified when you present your pick up code for collection.
+                    For private delivery, your payment will be verified when you present your pick up code to process delivery.
                   </p>
                   <p class="text-xs text-green-600 mt-2 font-medium">
                     Please allow up to 30 minutes for verification.
@@ -286,6 +301,7 @@ const loadingRates = ref(false)
 const orderReference = ref(
   Math.random().toString(36).substring(2, 10).toUpperCase()
 )
+const emailError = ref('')
 
 // Fetch live BTC price
 async function fetchExchangeRates() {
@@ -327,7 +343,7 @@ onMounted(() => {
 
 const delivery = ref({
   name: '',
-  phone: '',
+  email: '',
   address: '',
 })
 
@@ -385,10 +401,31 @@ function formatCurrency(amount) {
   }).format(amount)
 }
 
+function validateEmail() {
+  if (!delivery.value.email) {
+    emailError.value = ''
+    return false
+  }
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(delivery.value.email)) {
+    emailError.value = 'Please enter a valid email address'
+    return false
+  }
+  
+  emailError.value = ''
+  return true
+}
+
 async function sendOrderDetails() {
-  if (deliveryType.value === 'standard' && (!delivery.value.name || !delivery.value.address || !delivery.value.phone)) {
-    alert('Please complete all delivery details first')
-    return
+  if (deliveryType.value === 'standard') {
+    if (!delivery.value.name || !delivery.value.email || !delivery.value.address) {
+      return
+    }
+    
+    if (!validateEmail()) {
+      return
+    }
   }
 
   try {
@@ -428,7 +465,7 @@ ${
   orderData.deliveryType === 'standard' ? 
   `📦 Delivery Details:
 👤 Name: ${orderData.deliveryDetails.name}
-📞 Phone: ${orderData.deliveryDetails.phone}
+📧 Email: ${orderData.deliveryDetails.email}
 🏠 Address: ${orderData.deliveryDetails.address}` 
   : 
   `🔐 Pickup Code: ${orderData.pickupCode}`
@@ -447,18 +484,27 @@ ${orderData.products.map(p => `- ${p.name} ${p.size !== 'N/A' ? `(Size: ${p.size
     
   } catch (error) {
     console.error('Error submitting order:', error)
-    alert('There was an error submitting your payment. Please try again.')
   }
 }
 
 function closeAndRedirect() {
   showConfirmationModal.value = false
   cart.clearCart()
-  router.push('/products')
+  router.push('/collections')
 }
 </script>
 
 <style scoped>
+/* Fade transition for error message */
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.2s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
 /* Modal transitions */
 .modal-enter-active, .modal-leave-active {
   transition: all 0.3s ease;
