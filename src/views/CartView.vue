@@ -26,7 +26,7 @@
           <h2 class="text-2xl font-light text-charcoal mb-4">Your cart is empty</h2>
           <p class="text-gray-600 font-light mb-8">Discover our curated collection of premium products</p>
           <RouterLink
-            to="/products"
+            to="/collections"
             class="inline-flex items-center gap-2 bg-muted-rose text-white px-8 py-3 rounded-full font-semibold text-sm tracking-widest uppercase hover:bg-[#A05662] shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
           >
             <span>Continue Shopping</span>
