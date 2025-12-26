@@ -137,7 +137,7 @@
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-4 mt-8">
             <RouterLink
-              to="/products"
+              to="/collections"
               class="flex-1 flex items-center justify-center gap-2 bg-white/90 text-charcoal border-2 border-muted-rose/20 px-6 py-3 rounded-full font-semibold text-sm tracking-widest uppercase hover:border-muted-rose hover:scale-102 transition-all duration-300 shadow-md"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
