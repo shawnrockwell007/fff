@@ -233,6 +233,7 @@
                   <p class="text-sm font-semibold text-green-800 mb-1">Payment Verification</p>
                   <p class="text-sm text-green-700">
                     We are verifying your payment and will send a confirmation email once completed.
+                    For private delivery, your payment will be verified when you present your pick up code for collection.
                   </p>
                   <p class="text-xs text-green-600 mt-2 font-medium">
                     Please allow up to 30 minutes for verification.
@@ -241,12 +242,12 @@
               </div>
             </div>
 
-            <button 
+            <RouterLink to="/collections"><button 
               @click="closeAndRedirect"
               class="w-full bg-muted-rose text-white py-3 rounded-full font-semibold text-sm tracking-widest uppercase hover:bg-[#A05662] transition-all duration-300 hover:scale-105 shadow-lg"
             >
               Continue Shopping
-            </button>
+            </button></RouterLink>
           </div>
         </div>
       </div>
@@ -272,7 +273,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useCartStore } from '@/stores/cartStore'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import axios from 'axios'
 
 const router = useRouter()
